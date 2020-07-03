@@ -717,6 +717,23 @@ class Input extends UI5Element {
 		return !!this._isPopoverOpen;
 	}
 
+	/**
+	 * Returns the container DOM element,
+	 * that the suggestion items are rendered in.
+	 * 
+	 * <br><br>
+	 * <b>Note:</b> the method is asynchronous.
+	 * @public
+	 * @returns {HTMLElement} the suggestions container DOM or null
+	 */
+	async getSuggestionsContainer() {
+		if (!this.Suggestions) {
+			return null;
+		}
+
+		return (await this.Suggestions._getScrollContainer());
+	}
+
 	async openPopover() {
 		this.popover = await this._getPopover();
 		if (this.popover) {

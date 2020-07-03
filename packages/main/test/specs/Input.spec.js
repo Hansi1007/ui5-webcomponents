@@ -160,6 +160,33 @@ describe("Input general interaction", () => {
 		input.keys("Enter"); // close suggestions
 	});
 
+	it("Checks suggestions scroll container", () => {
+		const input = browser.$("#inputInfo").shadow$("input");
+
+		input.click();
+
+		const suggestionContainerInfo = browser.execute(async () => {
+			const input = document.getElementById("inputInfo");
+			const sc = await input.getSuggestionsContainer();
+
+			return {
+				height: sc.offsetHeight,
+				scrollHeight: sc.scrollHeight,
+			};
+		});
+
+		assert.ok(suggestionContainerInfo.height > 0,
+			"Suggestion container height is retrieved.");
+
+		assert.ok(suggestionContainerInfo.scrollHeight > 0,
+			"Suggestion container scrollHeight is retrieved.");
+
+		assert.equal(
+			suggestionContainerInfo.height,
+			suggestionContainerInfo.scrollHeight,
+			"The container is not scrollable - the height and the scrollHeight are equal.");
+	});
+
 	it("handles suggestions", () => {
 		browser.url("http://localhost:8080/test-resources/pages/Input.html");
 
@@ -270,4 +297,5 @@ describe("Input general interaction", () => {
 
 		assert.strictEqual(innerInput.getAttribute("aria-label"), NEW_TEXT, "aria-label is reflected in the shadow DOM")
 	});
+
 });
